@@ -1,0 +1,9 @@
+{
+  "name": "FactorioCraft",
+  "description": "The mod adds Minecraft Integration builing on Factorio-Minecraft Bridge",
+  "version": "0.0.1",
+  "title": "Factorio Craft",
+  "author": "genae",
+  "dependencies": ["base"],
+  "factorio_version": "0.16"
+}
