@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "a  ",
+    " a ",
+    "  a"
+  ],
+  "key":
+  {
+    "a":
+    {
+      "item": "minecraft:dirt",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "factoriocraft:minecraftsciencepack",
+    "count": 1,
+    "data": 0
+  }
+}
