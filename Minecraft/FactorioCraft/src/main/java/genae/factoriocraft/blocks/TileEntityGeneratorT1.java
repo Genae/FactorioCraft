@@ -54,6 +54,10 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
         this.readFromNBT(packet.getNbtCompound());
     }
 
+    public void getActualState() {
+
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -102,12 +106,14 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
 
     @Override
     public void update() {
+        boolean isPowered = getWorld().isBlockIndirectlyGettingPowered(pos) > 0;
+        boolean isFull = this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored();
         ItemStack burningItem = itemStackHandler.getStackInSlot(0);
         int generationPerTick = 25;
-        if(this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored() || (burningItem.isEmpty() && cookTime == 0) || (!isItemFuel(burningItem) && cookTime == 0))
+        if(isFull || !isPowered || (burningItem.isEmpty() && cookTime == 0) || (!isItemFuel(burningItem) && cookTime == 0))
         {
             if(cooking)
-                BlockGeneratorT1.setBlockState(cooking = false, getWorld(), pos);
+                BlockGeneratorT1.setBlockState(isPowered, cooking = false, isFull, getWorld(), pos);
             return;
         }
         if(cookTime == 0){
@@ -116,7 +122,7 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
             burningItem.shrink(1);
         }
         if(!cooking)
-            BlockGeneratorT1.setBlockState(cooking = true, getWorld(), pos);
+            BlockGeneratorT1.setBlockState(isPowered, cooking = true, isFull, getWorld(), pos);
         cookTime--;
         this.energyStorage.receiveEnergy(generationPerTick, false);
     }
@@ -129,5 +135,11 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
 
     private boolean isItemFuel(ItemStack burningItem) {
         return getFuelValue(burningItem) > 0;
+    }
+
+    public int getBlockState() {
+        boolean isPowered = getWorld().isBlockIndirectlyGettingPowered(pos) > 0;
+        boolean isFull = this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored();
+        return cooking ? 2 : (isFull && isPowered ? 3 : (isFull ? 4 : (isPowered ? 1 : 0)));
     }
 }

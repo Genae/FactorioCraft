@@ -7,6 +7,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -19,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +32,7 @@ import java.util.Random;
 public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    public static final PropertyBool ENABLED = PropertyBool.create("enabled");
+    public static final PropertyInteger STATE = PropertyInteger.create("state", 0, 4);
     public static final int GUI_ID = 1;
 
     public BlockGeneratorT1() {
@@ -38,7 +40,7 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
         setUnlocalizedName(FactorioCraft.MODID + ".generatort1");
         setRegistryName("generatort1");
 
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ENABLED, false));
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(STATE, 0));
     }
 
     @SideOnly(Side.CLIENT)
@@ -46,15 +48,22 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
-    public static void setBlockState(boolean enabled, World world, BlockPos pos) {
+    public static void setBlockState(boolean enabled, boolean cooking, boolean full, World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         TileEntity te = world.getTileEntity(pos);
 
-        world.setBlockState(pos, ModBlocks.generatorT1.getDefaultState().withProperty(ENABLED, enabled).withProperty(FACING, state.getValue(FACING)));
+        int renderState = cooking ? 2 : (full && enabled ? 3 : (full ? 4 : (enabled ? 1 : 0)));
+        world.setBlockState(pos, ModBlocks.generatorT1.getDefaultState().withProperty(STATE, renderState).withProperty(FACING, state.getValue(FACING)));
         if(te != null){
             te.validate();
             world.setTileEntity(pos, te);
         }
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos){
+        TileEntityGeneratorT1 te = getTileEntity(worldIn, pos);
+        return state.withProperty(STATE, te.getBlockState());
     }
 
     @Override
@@ -70,17 +79,17 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
                 .withProperty(FACING, EnumFacing.getFront(meta & 7))
-                .withProperty(ENABLED, (meta & 8) != 0);
+                .withProperty(STATE, 0);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getIndex() + (state.getValue(ENABLED) ? 8 : 0);
+        return state.getValue(FACING).getIndex();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING, ENABLED);
+        return new BlockStateContainer(this, FACING, STATE);
     }
 
     @Nullable
@@ -89,7 +98,7 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
         return new TileEntityGeneratorT1();
     }
 
-    private TileEntityGeneratorT1 getTileEntity(World world, BlockPos pos) {
+    private TileEntityGeneratorT1 getTileEntity(IBlockAccess world, BlockPos pos) {
         return (TileEntityGeneratorT1) world.getTileEntity(pos);
     }
 

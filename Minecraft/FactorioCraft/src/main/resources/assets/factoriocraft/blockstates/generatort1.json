@@ -3,7 +3,7 @@
   "defaults": {
     "model": "factoriocraft:generatort1",
     "textures": {
-      "front": "factoriocraft:blocks/generatort1_off"
+      "front": "factoriocraft:blocks/generatort1_front"
     }
   },
   "variants": {
@@ -17,11 +17,26 @@
       "up": {"x": -90},
       "down": {"x": 90}
     },
-    "enabled": {
-      "false": {},
-      "true": {
+    "state": {
+      "0": {},
+      "1": {
         "textures": {
-          "front": "factoriocraft:blocks/generatort1_on"
+          "front": "factoriocraft:blocks/generatort1_front_enabled"
+        }
+      },
+      "2": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_lit"
+        }
+      },
+      "3": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_full_enabled"
+        }
+      },
+      "4": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_full"
         }
       }
     }
