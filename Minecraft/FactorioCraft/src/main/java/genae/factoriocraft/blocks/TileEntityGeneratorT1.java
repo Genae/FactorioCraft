@@ -1,7 +1,6 @@
 package genae.factoriocraft.blocks;
 
 import genae.factoriocraft.energy.CustomEnergyStorage;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -11,15 +10,11 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nullable;
 
 public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
 
@@ -111,7 +106,8 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
         int generationPerTick = 25;
         if(this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored() || (burningItem.isEmpty() && cookTime == 0) || (!isItemFuel(burningItem) && cookTime == 0))
         {
-            cooking = false;
+            if(cooking)
+                BlockGeneratorT1.setBlockState(cooking = false, getWorld(), pos);
             return;
         }
         if(cookTime == 0){
@@ -119,7 +115,8 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
             cookTimeMax = getFuelValue(burningItem)/generationPerTick;
             burningItem.shrink(1);
         }
-        cooking = true;
+        if(!cooking)
+            BlockGeneratorT1.setBlockState(cooking = true, getWorld(), pos);
         cookTime--;
         this.energyStorage.receiveEnergy(generationPerTick, false);
     }

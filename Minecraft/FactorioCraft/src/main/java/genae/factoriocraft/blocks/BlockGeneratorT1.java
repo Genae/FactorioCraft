@@ -1,6 +1,7 @@
 package genae.factoriocraft.blocks;
 
 import genae.factoriocraft.FactorioCraft;
+import genae.factoriocraft.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -37,7 +38,7 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
         setUnlocalizedName(FactorioCraft.MODID + ".generatort1");
         setRegistryName("generatort1");
 
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ENABLED, false));
     }
 
     @SideOnly(Side.CLIENT)
@@ -45,10 +46,15 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        super.updateTick(worldIn, pos, state, rand);
-        worldIn.setBlockState(pos, state.withProperty(ENABLED, getTileEntity(worldIn, pos).cooking), 3);
+    public static void setBlockState(boolean enabled, World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        TileEntity te = world.getTileEntity(pos);
+
+        world.setBlockState(pos, ModBlocks.generatorT1.getDefaultState().withProperty(ENABLED, enabled).withProperty(FACING, state.getValue(FACING)));
+        if(te != null){
+            te.validate();
+            world.setTileEntity(pos, te);
+        }
     }
 
     @Override
