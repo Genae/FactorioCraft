@@ -2,9 +2,14 @@ package genae.factoriocraft.proxy;
 
 import genae.factoriocraft.Config;
 import genae.factoriocraft.FactorioCraft;
+import genae.factoriocraft.ModBlocks;
+import genae.factoriocraft.blocks.BlockGeneratorT1;
+import genae.factoriocraft.blocks.TileEntityGeneratorT1;
 import genae.factoriocraft.items.ItemMinecraftSciencePack;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
@@ -52,11 +58,14 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        event.getRegistry().register(new BlockGeneratorT1());
+        GameRegistry.registerTileEntity(TileEntityGeneratorT1.class, new ResourceLocation(FactorioCraft.MODID + "_generatort1"));
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new ItemMinecraftSciencePack());
+        event.getRegistry().register(new ItemBlock(ModBlocks.generatorT1).setRegistryName(ModBlocks.generatorT1.getRegistryName()));
     }
 
 }

@@ -1,6 +1,7 @@
 package genae.factoriocraft.proxy;
 
 import genae.factoriocraft.FactorioCraft;
+import genae.factoriocraft.ModBlocks;
 import genae.factoriocraft.ModItems;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -36,12 +37,12 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit(FMLPostInitializationEvent e) {
         super.postInit(e);
-        //ModBlocks.initItemModels();
+        ModBlocks.initItemModels();
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        //ModBlocks.initModels();
+        ModBlocks.initModels();
         ModItems.initModels();
     }
 
