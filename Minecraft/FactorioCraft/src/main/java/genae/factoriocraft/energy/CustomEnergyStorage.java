@@ -31,7 +31,18 @@ public class CustomEnergyStorage extends EnergyStorage {
 
     }
 
+    public void recieveEnergyInternal(int energy){
+        this.energy += Math.min(energy, getMaxEnergyStored() - getEnergyStored());
+    }
+
     public void writeToNBT(NBTTagCompound compound) {
         compound.setInteger("energy", this.energy);
+    }
+
+    public int getMaxExtract() {
+        return maxExtract;
+    }
+    public int getMaxRecieve() {
+        return maxReceive;
     }
 }

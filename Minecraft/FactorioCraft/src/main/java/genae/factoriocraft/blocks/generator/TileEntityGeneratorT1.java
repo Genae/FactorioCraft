@@ -1,4 +1,4 @@
-package genae.factoriocraft.blocks;
+package genae.factoriocraft.blocks.generator;
 
 import genae.factoriocraft.energy.CustomEnergyStorage;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,8 +10,10 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -22,7 +24,7 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
 
 
     public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE);
-    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(10000);
+    public CustomEnergyStorage energyStorage = new CustomEnergyStorage(10000, 0, 128);
     public int cookTime;
     public int cookTimeMax;
     public boolean cooking;
@@ -106,6 +108,7 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
 
     @Override
     public void update() {
+        transmitEnergy();
         boolean isPowered = getWorld().isBlockIndirectlyGettingPowered(pos) > 0;
         boolean isFull = this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored();
         ItemStack burningItem = itemStackHandler.getStackInSlot(0);
@@ -124,7 +127,7 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
         if(!cooking)
             BlockGeneratorT1.setBlockState(isPowered, cooking = true, isFull, getWorld(), pos);
         cookTime--;
-        this.energyStorage.receiveEnergy(generationPerTick, false);
+        this.energyStorage.recieveEnergyInternal(generationPerTick);
     }
 
     private int getFuelValue(ItemStack burningItem) {
@@ -141,5 +144,19 @@ public class TileEntityGeneratorT1 extends TileEntity implements ITickable {
         boolean isPowered = getWorld().isBlockIndirectlyGettingPowered(pos) > 0;
         boolean isFull = this.energyStorage.getMaxEnergyStored() == this.energyStorage.getEnergyStored();
         return cooking ? 2 : (isFull && isPowered ? 3 : (isFull ? 4 : (isPowered ? 1 : 0)));
+    }
+
+    private void transmitEnergy() {
+        for (int i = 0; i < 6; i++) {
+            BlockPos recieverPos = new BlockPos(this.pos.getX() + EnumFacing.getFront(i).getFrontOffsetX(),this.pos.getY() + EnumFacing.getFront(i).getFrontOffsetY(),this.pos.getZ() + EnumFacing.getFront(i).getFrontOffsetZ());
+
+            final TileEntity recieverTileEntity = this.world.getTileEntity(recieverPos);
+            if (recieverTileEntity != null) {
+                final IEnergyStorage recieverStorage = recieverTileEntity.getCapability(CapabilityEnergy.ENERGY, EnumFacing.getFront(i).getOpposite());
+                if(recieverStorage != null && recieverStorage.canReceive()){
+                    energyStorage.extractEnergy(recieverStorage.receiveEnergy(Math.min(energyStorage.getMaxExtract(),energyStorage.getEnergyStored()), false), false);
+                }
+            }
+        }
     }
 }

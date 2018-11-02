@@ -1,4 +1,4 @@
-package genae.factoriocraft.blocks;
+package genae.factoriocraft.blocks.generator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IContainerListener;
@@ -64,7 +64,10 @@ public class ContainerGeneratorT1 extends Container {
             if(this.energy != this.te.energyStorage.getEnergyStored())
                 l.sendWindowProperty(this, 0, this.energy = this.te.energyStorage.getEnergyStored());
             if(this.cookTime != this.te.cookTime)
+            {
                 l.sendWindowProperty(this, 1, this.cookTime = this.te.cookTime);
+                l.sendWindowProperty(this, 0, this.energy = this.te.energyStorage.getEnergyStored());
+            }
             if(this.cooking != this.te.cooking)
                 l.sendWindowProperty(this, 2, (this.cooking = this.te.cooking) ? 0 : 1);
         }

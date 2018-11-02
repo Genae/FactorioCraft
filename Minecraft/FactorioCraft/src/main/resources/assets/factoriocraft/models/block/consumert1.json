@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "factoriocraft:blocks/generatort1",
+    "down": "factoriocraft:blocks/generatort1_top",
+    "up": "factoriocraft:blocks/generatort1_top",
+    "east": "factoriocraft:blocks/generatort1_side",
+    "west": "factoriocraft:blocks/generatort1_side",
+    "north": "#front",
+    "south": "factoriocraft:blocks/generatort1_side"
+  }
+}

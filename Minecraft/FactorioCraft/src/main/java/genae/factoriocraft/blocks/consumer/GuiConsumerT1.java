@@ -1,16 +1,16 @@
-package genae.factoriocraft.blocks;
+package genae.factoriocraft.blocks.consumer;
 
 import genae.factoriocraft.FactorioCraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiGeneratorT1 extends GuiContainer {
-    private final TileEntityGeneratorT1 te;
+public class GuiConsumerT1 extends GuiContainer {
+    private final TileEntityConsumerT1 te;
 
     private static final ResourceLocation TEXTURES = new ResourceLocation(FactorioCraft.MODID, "textures/gui/containergeneratort1.png");
 
-    public GuiGeneratorT1(TileEntityGeneratorT1 tileEntity, ContainerGeneratorT1 container) {
+    public GuiConsumerT1(TileEntityConsumerT1 tileEntity, ContainerConsumerT1 container) {
         super(container);
         te = tileEntity;
     }

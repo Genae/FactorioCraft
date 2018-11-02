@@ -1,6 +1,8 @@
 package genae.factoriocraft;
 
 import genae.factoriocraft.proxy.CommonProxy;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,6 +15,15 @@ public class FactorioCraft {
     public static final String MODID = "factoriocraft";
     public static final String MODNAME = "FactorioCraft";
     public static final String MODVERSION = "0.0.1";
+
+    public static final CreativeTabs CUSTOM_TAB = (new CreativeTabs("tabFactorioCraft") {
+
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(ModItems.minecraftSciencePack);
+        }
+
+    });
 
     @SidedProxy(clientSide = "genae.factoriocraft.proxy.ClientProxy", serverSide = "genae.factoriocraft.proxy.ServerProxy")
     public static CommonProxy proxy;

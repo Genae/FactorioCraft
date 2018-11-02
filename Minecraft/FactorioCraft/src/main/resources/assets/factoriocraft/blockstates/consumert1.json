@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "factoriocraft:generatort1",
+    "textures": {
+      "front": "factoriocraft:blocks/generatort1_front"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "north": {},
+      "south": {"y": 180},
+      "west": {"y": 270},
+      "east": {"y": 90},
+      "up": {"x": -90},
+      "down": {"x": 90}
+    },
+    "state": {
+      "0": {},
+      "1": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_enabled"
+        }
+      },
+      "2": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_lit"
+        }
+      },
+      "3": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_full_enabled"
+        }
+      },
+      "4": {
+        "textures": {
+          "front": "factoriocraft:blocks/generatort1_front_full"
+        }
+      }
+    }
+  }
+}

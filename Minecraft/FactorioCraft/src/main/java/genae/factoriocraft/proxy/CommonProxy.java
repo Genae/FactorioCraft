@@ -3,8 +3,10 @@ package genae.factoriocraft.proxy;
 import genae.factoriocraft.Config;
 import genae.factoriocraft.FactorioCraft;
 import genae.factoriocraft.ModBlocks;
-import genae.factoriocraft.blocks.BlockGeneratorT1;
-import genae.factoriocraft.blocks.TileEntityGeneratorT1;
+import genae.factoriocraft.blocks.consumer.BlockConsumerT1;
+import genae.factoriocraft.blocks.consumer.TileEntityConsumerT1;
+import genae.factoriocraft.blocks.generator.BlockGeneratorT1;
+import genae.factoriocraft.blocks.generator.TileEntityGeneratorT1;
 import genae.factoriocraft.items.ItemMinecraftSciencePack;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -60,12 +62,15 @@ public class CommonProxy {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(new BlockGeneratorT1());
         GameRegistry.registerTileEntity(TileEntityGeneratorT1.class, new ResourceLocation(FactorioCraft.MODID + "_generatort1"));
+        event.getRegistry().register(new BlockConsumerT1());
+        GameRegistry.registerTileEntity(TileEntityConsumerT1.class, new ResourceLocation(FactorioCraft.MODID + "_consumert1"));
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new ItemMinecraftSciencePack());
         event.getRegistry().register(new ItemBlock(ModBlocks.generatorT1).setRegistryName(ModBlocks.generatorT1.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(ModBlocks.consumerT1).setRegistryName(ModBlocks.consumerT1.getRegistryName()));
     }
 
 }

@@ -1,11 +1,10 @@
-package genae.factoriocraft.blocks;
+package genae.factoriocraft.blocks.generator;
 
 import genae.factoriocraft.FactorioCraft;
 import genae.factoriocraft.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
 
@@ -46,6 +44,7 @@ public class BlockGeneratorT1 extends Block implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     public void initModel() {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+        setCreativeTab(FactorioCraft.CUSTOM_TAB);
     }
 
     public static void setBlockState(boolean enabled, boolean cooking, boolean full, World world, BlockPos pos) {
