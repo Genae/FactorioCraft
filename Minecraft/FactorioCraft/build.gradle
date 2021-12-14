@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "0.0.1"
-group = "genae.factoriocraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "genae.factoriocraft" // https://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "factoriocraft"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -52,8 +52,8 @@ dependencies {
     //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
     // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    // https://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // https://www.gradle.org/docs/current/userguide/dependency_management.html
 
 }
 
